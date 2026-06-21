@@ -1,0 +1,183 @@
+{
+  "dataset": "/home/kavin/flipkart/Astram event data_anonymized - Astram event data_anonymizedb40ac87.csv",
+  "row_count": 8173,
+  "duration_metrics": {
+    "mae": 39.168,
+    "rmse": 62.828,
+    "r2": 0.591
+  },
+  "duration_backend": "ensemble",
+  "duration_backend_error": null,
+  "impact_metrics": {
+    "mae": 7.431,
+    "rmse": 9.589,
+    "r2": 0.683
+  },
+  "impact_backend": "catboost",
+  "impact_backend_error": null,
+  "hotspot_count": 53,
+  "top_hotspots": [
+    {
+      "cluster": 0,
+      "event_count": 5208,
+      "center_latitude": 12.999276,
+      "center_longitude": 77.588676,
+      "avg_duration": 111.92,
+      "top_corridor": "Non-corridor",
+      "top_cause": "vehicle_breakdown"
+    },
+    {
+      "cluster": 1,
+      "event_count": 461,
+      "center_latitude": 12.948121,
+      "center_longitude": 77.6926,
+      "avg_duration": 168.07,
+      "top_corridor": "ORR East 1",
+      "top_cause": "vehicle_breakdown"
+    },
+    {
+      "cluster": 8,
+      "event_count": 309,
+      "center_latitude": 12.9795,
+      "center_longitude": 77.511223,
+      "avg_duration": 113.97,
+      "top_corridor": "Magadi Road",
+      "top_cause": "vehicle_breakdown"
+    },
+    {
+      "cluster": 2,
+      "event_count": 255,
+      "center_latitude": 12.917173,
+      "center_longitude": 77.580105,
+      "avg_duration": 147.72,
+      "top_corridor": "Non-corridor",
+      "top_cause": "vehicle_breakdown"
+    },
+    {
+      "cluster": 3,
+      "event_count": 197,
+      "center_latitude": 12.890966,
+      "center_longitude": 77.597106,
+      "avg_duration": 89.05,
+      "top_corridor": "Bannerghata Road",
+      "top_cause": "vehicle_breakdown"
+    },
+    {
+      "cluster": 9,
+      "event_count": 156,
+      "center_latitude": 13.063861,
+      "center_longitude": 77.457535,
+      "avg_duration": 121.82,
+      "top_corridor": "Non-corridor",
+      "top_cause": "vehicle_breakdown"
+    },
+    {
+      "cluster": 27,
+      "event_count": 72,
+      "center_latitude": 12.94073,
+      "center_longitude": 77.747072,
+      "avg_duration": 120.51,
+      "top_corridor": "Non-corridor",
+      "top_cause": "vehicle_breakdown"
+    },
+    {
+      "cluster": 19,
+      "event_count": 67,
+      "center_latitude": 13.045496,
+      "center_longitude": 77.643762,
+      "avg_duration": 220.25,
+      "top_corridor": "Non-corridor",
+      "top_cause": "construction"
+    },
+    {
+      "cluster": 6,
+      "event_count": 61,
+      "center_latitude": 12.972468,
+      "center_longitude": 77.750036,
+      "avg_duration": 153.75,
+      "top_corridor": "Non-corridor",
+      "top_cause": "vehicle_breakdown"
+    },
+    {
+      "cluster": 15,
+      "event_count": 57,
+      "center_latitude": 12.879651,
+      "center_longitude": 77.646399,
+      "avg_duration": 92.36,
+      "top_corridor": "Hosur Road",
+      "top_cause": "vehicle_breakdown"
+    }
+  ],
+  "top_corridors": [
+    {
+      "corridor": "Non-corridor",
+      "frequency": 3124,
+      "avg_duration": 118.27,
+      "closure_probability": 0.121,
+      "risk_score": 100.0
+    },
+    {
+      "corridor": "Mysore Road",
+      "frequency": 743,
+      "avg_duration": 113.08,
+      "closure_probability": 0.11,
+      "risk_score": 20.74
+    },
+    {
+      "corridor": "Bellary Road 1",
+      "frequency": 610,
+      "avg_duration": 122.67,
+      "closure_probability": 0.054,
+      "risk_score": 9.05
+    },
+    {
+      "corridor": "ORR North 1",
+      "frequency": 275,
+      "avg_duration": 119.63,
+      "closure_probability": 0.08,
+      "risk_score": 5.89
+    },
+    {
+      "corridor": "Tumkur Road",
+      "frequency": 458,
+      "avg_duration": 106.12,
+      "closure_probability": 0.026,
+      "risk_score": 5.44
+    },
+    {
+      "corridor": "Bellary Road 2",
+      "frequency": 379,
+      "avg_duration": 126.31,
+      "closure_probability": 0.032,
+      "risk_score": 5.35
+    },
+    {
+      "corridor": "ORR East 2",
+      "frequency": 187,
+      "avg_duration": 222.02,
+      "closure_probability": 0.016,
+      "risk_score": 4.64
+    },
+    {
+      "corridor": "ORR East 1",
+      "frequency": 244,
+      "avg_duration": 109.23,
+      "closure_probability": 0.074,
+      "risk_score": 4.4
+    },
+    {
+      "corridor": "Hosur Road",
+      "frequency": 298,
+      "avg_duration": 89.1,
+      "closure_probability": 0.057,
+      "risk_score": 3.39
+    },
+    {
+      "corridor": "Old Madras Road",
+      "frequency": 263,
+      "avg_duration": 113.26,
+      "closure_probability": 0.046,
+      "risk_score": 3.33
+    }
+  ]
+}

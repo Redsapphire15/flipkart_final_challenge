@@ -1,0 +1,12 @@
+{
+  "impact_bands": [
+    {"min_impact": 80, "officers": 4, "barricades": 3, "escalation_level": "Command Center"},
+    {"min_impact": 60, "officers": 3, "barricades": 2, "escalation_level": "Senior Inspector"},
+    {"min_impact": 40, "officers": 2, "barricades": 1, "escalation_level": "Field Supervisor"},
+    {"min_impact": 0, "officers": 1, "barricades": 0, "escalation_level": "Routine Patrol"}
+  ],
+  "tow_truck_causes": ["vehicle_breakdown", "accident"],
+  "tow_truck_vehicle_types": ["truck", "heavy_vehicle", "lcv"],
+  "long_duration_minutes": 90,
+  "high_corridor_risk": 70
+}
