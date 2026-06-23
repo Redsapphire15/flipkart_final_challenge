@@ -50,44 +50,144 @@ def inject_styles() -> None:
     st.markdown(
         """
         <style>
+        /* ═══════════════════════════════════════════════════════════════
+           FORCE DARK MODE — browser-agnostic, overrides light-mode bleed
+           ═══════════════════════════════════════════════════════════════ */
+
+        /* 1. Tell the browser this entire document is dark — kills
+              system-colour inheritance that causes white boxes in light mode */
         :root {
-            color-scheme: dark;
+            color-scheme: dark only !important;
         }
+        html {
+            color-scheme: dark only !important;
+        }
+
+        /* 2. Root backgrounds */
+        html, body,
+        .stApp,
+        [data-testid="stAppViewContainer"],
+        [data-testid="stMain"],
+        [data-testid="stMainBlockContainer"],
+        .main,
+        .main > div {
+            background-color: #0b1120 !important;
+            color: #f8fafc !important;
+        }
+
         .block-container {
+            background-color: #0b1120 !important;
             padding-top: 1.3rem;
         }
-        .stApp {
-            background: #0b1120;
-            color: #f8fafc;
+
+        /* 3. Every generic wrapper div — transparent so parent dark bg shows */
+        div[data-testid="stVerticalBlock"],
+        div[data-testid="stVerticalBlock"] > div,
+        div[data-testid="stHorizontalBlock"] > div[data-testid="column"],
+        div[data-testid="element-container"],
+        div[data-testid="stMarkdownContainer"] {
+            background-color: transparent !important;
         }
-        div[data-testid="stMetric"],
-        div[data-testid="stExpander"] {
-            background: #111827;
-            border: 1px solid #334155;
-            border-radius: 8px;
-            color: #f8fafc;
+
+        /* 4. Border-wrapper containers (the main culprit for white boxes) */
+        div[data-testid="stVerticalBlockBorderWrapper"],
+        div[data-testid="stVerticalBlockBorderWrapper"] > div,
+        section[data-testid="stSidebar"] ~ div div[data-testid="stVerticalBlockBorderWrapper"] {
+            background-color: #111827 !important;
+            border-color: #334155 !important;
+            color: #f8fafc !important;
         }
+
+        /* 5. Metrics */
         div[data-testid="stMetric"] {
+            background: #111827 !important;
+            border: 1px solid #334155 !important;
+            border-radius: 8px;
             padding: 0.75rem 0.9rem;
+            color: #f8fafc !important;
         }
         div[data-testid="stMetric"] label,
         div[data-testid="stMetric"] [data-testid="stMetricValue"],
         div[data-testid="stMetric"] [data-testid="stMetricDelta"] {
             color: #f8fafc !important;
         }
-        div[data-testid="stExpander"] summary,
-        div[data-testid="stExpander"] p,
-        div[data-testid="stExpander"] span,
-        div[data-testid="stExpander"] label {
+
+        /* 6. Expanders */
+        div[data-testid="stExpander"] {
+            background: #111827 !important;
+            border: 1px solid #334155 !important;
+            border-radius: 8px;
             color: #f8fafc !important;
         }
-        div[data-testid="stForm"],
-        div[data-testid="stDataFrame"],
-        div[data-testid="stVerticalBlockBorderWrapper"] {
-            background: #111827;
-            border-color: #334155;
-            color: #f8fafc;
+        div[data-testid="stExpander"] summary,
+        div[data-testid="stExpander"] details,
+        div[data-testid="stExpander"] p,
+        div[data-testid="stExpander"] span,
+        div[data-testid="stExpander"] label,
+        div[data-testid="stExpander"] div {
+            background-color: transparent !important;
+            color: #f8fafc !important;
         }
+
+        /* 7. Alert / info / warning / success / error boxes */
+        div[data-testid="stAlert"],
+        div[data-baseweb="notification"],
+        [data-testid="stAlert"] > div,
+        .stAlert {
+            background-color: #1e293b !important;
+            color: #f8fafc !important;
+            border-color: #334155 !important;
+        }
+        div[data-testid="stAlert"] p,
+        div[data-testid="stAlert"] span,
+        div[data-baseweb="notification"] p,
+        div[data-baseweb="notification"] span {
+            color: #f8fafc !important;
+        }
+
+        /* 8. DataFrames / Tables */
+        div[data-testid="stDataFrame"],
+        div[data-testid="stDataFrame"] > div,
+        div[data-testid="stDataFrame"] iframe,
+        .stDataFrame,
+        div[data-testid="stTable"],
+        div[data-testid="stTable"] table {
+            background-color: #111827 !important;
+            border-color: #334155 !important;
+            color: #f8fafc !important;
+        }
+
+        /* 9. Forms */
+        div[data-testid="stForm"] {
+            background: #111827 !important;
+            border-color: #334155 !important;
+            color: #f8fafc !important;
+        }
+
+        /* 10. Chat messages */
+        div[data-testid="stChatMessage"],
+        div[data-testid="stChatMessageContent"] {
+            background-color: #1e293b !important;
+            color: #f8fafc !important;
+        }
+
+        /* 11. Tabs */
+        div[data-baseweb="tab-list"],
+        button[data-baseweb="tab"] {
+            background-color: #0b1120 !important;
+            color: #f8fafc !important;
+            border-color: #334155 !important;
+        }
+        button[data-baseweb="tab"][aria-selected="true"] {
+            background-color: #1e293b !important;
+            color: #f8fafc !important;
+            border-bottom-color: #3b82f6 !important;
+        }
+        div[data-baseweb="tab-panel"] {
+            background-color: #111827 !important;
+        }
+
+        /* ── Custom classes ── */
         .command-subtitle {
             color: #cbd5e1;
             margin-top: -0.65rem;
@@ -100,11 +200,430 @@ def inject_styles() -> None:
             text-transform: uppercase;
             letter-spacing: 0.04em;
         }
+
+        /* ── Sidebar ── */
+        [data-testid="stSidebar"],
+        [data-testid="stSidebar"] > div:first-child,
+        [data-testid="stSidebar"] section {
+            background-color: #0E1117 !important;
+        }
+        [data-testid="stSidebar"] p,
+        [data-testid="stSidebar"] span,
+        [data-testid="stSidebar"] label,
+        [data-testid="stSidebar"] h1,
+        [data-testid="stSidebar"] h2,
+        [data-testid="stSidebar"] h3 {
+            color: #FAFAFA !important;
+        }
+
+        /* ── Inputs ── */
+        [data-testid="stSidebar"] input,
+        [data-testid="stSidebar"] select,
+        [data-testid="stSidebar"] textarea,
+        select, textarea, input,
+        .stTextInput input,
+        .stSelectbox select,
+        .stMultiselect select,
+        .stDateInput input,
+        .stNumberInput input,
+        .stTextArea textarea,
+        .stTextInput textarea {
+            background-color: #262730 !important;
+            color: #FAFAFA !important;
+            border-color: #334155 !important;
+        }
+        [data-testid="stSidebar"] select option,
+        select option {
+            background-color: #111827 !important;
+            color: #f8fafc !important;
+        }
+
+        /* ── Dropdowns / listboxes ── */
+        div[role="listbox"],
+        div[role="presentation"] {
+            background-color: #111827 !important;
+            color: #f8fafc !important;
+        }
+        div[role="option"],
+        div[role="menuitem"] {
+            background-color: #111827 !important;
+            color: #f8fafc !important;
+        }
+        div[role="option"][aria-selected="true"],
+        div[role="option"]:hover,
+        div[role="menuitem"]:hover,
+        div[role="menuitem"][aria-selected="true"] {
+            background-color: #1f2937 !important;
+            color: #f8fafc !important;
+        }
+
+        /* ── BaseWeb Selectbox ── */
+        div[data-baseweb="select"] > div:first-child {
+            background-color: #262730 !important;
+            border-color: #334155 !important;
+        }
+        div[data-baseweb="select"] > div:first-child:hover,
+        div[data-baseweb="select"] > div:first-child:focus-within {
+            background-color: #262730 !important;
+            border-color: #475569 !important;
+        }
+        div[data-baseweb="select"] input,
+        div[data-baseweb="select"] span {
+            background-color: transparent !important;
+            color: #f8fafc !important;
+        }
+        div[data-baseweb="select"] svg {
+            fill: #f8fafc !important;
+        }
+        ul[data-baseweb="menu"],
+        div[data-baseweb="popover"],
+        div[data-baseweb="menu"] {
+            background-color: #111827 !important;
+            border-color: #334155 !important;
+        }
+        li[role="option"],
+        div[data-baseweb="menu"] li {
+            background-color: #111827 !important;
+            color: #f8fafc !important;
+        }
+        li[role="option"]:hover,
+        li[role="option"][aria-selected="true"],
+        div[data-baseweb="menu"] li:hover {
+            background-color: #1f2937 !important;
+            color: #f8fafc !important;
+        }
+        span[data-baseweb="tag"],
+        div[data-baseweb="tag"] {
+            background-color: #1e293b !important;
+            color: #f8fafc !important;
+        }
+
+        /* ── Header / Radio nav ── */
+        div[data-testid="stRadio"] > div[role="radiogroup"],
+        header[data-testid="stHeader"] {
+            background-color: #0E1117 !important;
+        }
+        div[data-testid="stRadio"] > div[role="radiogroup"] label p,
+        header[data-testid="stHeader"] * {
+            color: #FAFAFA !important;
+        }
+
+        /* ── All regular (non-nav) buttons ── */
+        button[kind="secondary"],
+        div[data-testid="stButton"] > button,
+        div[data-testid="stFormSubmitButton"] > button {
+            background-color: #1e293b !important;
+            color: #f8fafc !important;
+            border: 1px solid #334155 !important;
+        }
+        button[kind="secondary"]:hover,
+        div[data-testid="stButton"] > button:hover,
+        div[data-testid="stFormSubmitButton"] > button:hover {
+            background-color: #334155 !important;
+            color: #f8fafc !important;
+            border: 1px solid #475569 !important;
+        }
+        div[data-testid="stButton"] > button p,
+        div[data-testid="stButton"] > button span,
+        div[data-testid="stFormSubmitButton"] > button p,
+        div[data-testid="stFormSubmitButton"] > button span {
+            color: #f8fafc !important;
+        }
+
+        /* ── Multiselect: tag chips (Map Layers, Incident dropdown tags) ── */
+        div[data-testid="stMultiSelect"] span[data-baseweb="tag"],
+        div[data-testid="stMultiSelect"] div[data-baseweb="tag"],
+        span[data-baseweb="tag"],
+        div[data-baseweb="tag"] {
+            background-color: #1e293b !important;
+            color: #f8fafc !important;
+            border-color: #334155 !important;
+        }
+        /* Text inside tag chips */
+        span[data-baseweb="tag"] span,
+        div[data-baseweb="tag"] span,
+        div[data-testid="stMultiSelect"] span[data-baseweb="tag"] span,
+        div[data-testid="stMultiSelect"] [data-baseweb="tag"] * {
+            color: #f8fafc !important;
+            background-color: transparent !important;
+        }
+        /* The × close button inside each tag */
+        span[data-baseweb="tag"] [role="presentation"],
+        div[data-baseweb="tag"] [role="presentation"],
+        span[data-baseweb="tag"] svg,
+        div[data-baseweb="tag"] svg {
+            fill: #f8fafc !important;
+            color: #f8fafc !important;
+        }
+        /* Multiselect control box itself */
+        div[data-testid="stMultiSelect"] div[data-baseweb="select"] > div:first-child {
+            background-color: #1e293b !important;
+            border-color: #334155 !important;
+        }
+        /* Placeholder / input text inside multiselect */
+        div[data-testid="stMultiSelect"] input {
+            color: #f8fafc !important;
+        }
+        /* ── Multiselect label */
+        div[data-testid="stMultiSelect"] label {
+            color: #f8fafc !important;
+        }
+
+        /* ── Selectbox: label + selected value text (main content, not just sidebar) ── */
+        div[data-testid="stSelectbox"] label,
+        div[data-testid="stSelectbox"] p {
+            color: #f8fafc !important;
+        }
+        div[data-testid="stSelectbox"] div[data-baseweb="select"] > div:first-child {
+            background-color: #1e293b !important;
+            border-color: #334155 !important;
+        }
+        div[data-testid="stSelectbox"] div[data-baseweb="select"] span,
+        div[data-testid="stSelectbox"] div[data-baseweb="select"] div,
+        div[data-testid="stSelectbox"] div[data-baseweb="select"] input {
+            color: #f8fafc !important;
+            background-color: transparent !important;
+        }
+        div[data-testid="stSelectbox"] div[data-baseweb="select"] svg {
+            fill: #f8fafc !important;
+        }
+
+        /* ── Nav buttons ── */
+        div[data-testid="stHorizontalBlock"] button {
+            background-color: #1e293b !important;
+            color: #f8fafc !important;
+            border: 1px solid #334155 !important;
+        }
+        div[data-testid="stHorizontalBlock"] button:hover {
+            background-color: #334155 !important;
+            color: #f8fafc !important;
+            border: 1px solid #475569 !important;
+        }
+        div[data-testid="stHorizontalBlock"] button[kind="primary"] {
+            background-color: #dc2626 !important;
+            color: #ffffff !important;
+            border: 1px solid #dc2626 !important;
+        }
+        div[data-testid="stHorizontalBlock"] button[kind="primary"]:hover {
+            background-color: #b91c1c !important;
+            border: 1px solid #b91c1c !important;
+        }
+        div[data-testid="stHorizontalBlock"] button[data-nav-active="true"] {
+            background-color: #dc2626 !important;
+            color: #ffffff !important;
+            border: 1px solid #dc2626 !important;
+        }
+        div[data-testid="stHorizontalBlock"] button[data-nav-active="true"]:hover {
+            background-color: #b91c1c !important;
+            border: 1px solid #b91c1c !important;
+        }
+        div[data-testid="stHorizontalBlock"] button p,
+        div[data-testid="stHorizontalBlock"] button span,
+        div[data-testid="stHorizontalBlock"] button div {
+            transition: all 0.2s ease !important;
+            color: inherit !important;
+        }
+
+        /* ── Tooltips / popovers ── */
+        div[data-baseweb="tooltip"],
+        div[data-baseweb="popover"] > div {
+            background-color: #1e293b !important;
+            color: #f8fafc !important;
+            border-color: #334155 !important;
+        }
+
+        /* ── Slider ── */
+        /* Track rail (unfilled portion) */
+        div[data-testid="stSlider"] [data-baseweb="slider"] > div:first-child {
+            background-color: #334155 !important;
+        }
+        /* Filled / active portion of the track */
+        div[data-testid="stSlider"] [data-baseweb="slider"] [role="progressbar"],
+        div[data-testid="stSlider"] [data-baseweb="slider"] [data-testid="stSliderTrackFill"],
+        div[data-testid="stSlider"] [data-baseweb="slider"] > div > div[style*="background"] {
+            background-color: #dc2626 !important;
+        }
+        /* Thumb (the draggable circle) */
+        div[data-testid="stSlider"] [data-baseweb="slider"] [role="slider"],
+        div[data-testid="stSlider"] [data-baseweb="slider"] div[data-testid="stThumbValue"] {
+            background-color: #dc2626 !important;
+            border-color: #dc2626 !important;
+        }
+        /* Value/tick labels below the slider */
+        div[data-testid="stSlider"] [data-testid="stTickBarMin"],
+        div[data-testid="stSlider"] [data-testid="stTickBarMax"],
+        div[data-testid="stSlider"] p,
+        div[data-testid="stSlider"] span {
+            color: #f8fafc !important;
+        }
+        /* Slider wrapper background */
+        div[data-testid="stSlider"] {
+            background-color: transparent !important;
+        }
+
+        /* ── Sidebar: ALL text elements ── */
+        [data-testid="stSidebar"] *,
+        [data-testid="stSidebar"] div,
+        [data-testid="stSidebar"] p,
+        [data-testid="stSidebar"] span,
+        [data-testid="stSidebar"] label,
+        [data-testid="stSidebar"] small,
+        [data-testid="stSidebar"] h1,
+        [data-testid="stSidebar"] h2,
+        [data-testid="stSidebar"] h3,
+        [data-testid="stSidebar"] h4 {
+            color: #FAFAFA !important;
+        }
+        /* Sidebar selectbox value text */
+        [data-testid="stSidebar"] div[data-baseweb="select"] span,
+        [data-testid="stSidebar"] div[data-baseweb="select"] div,
+        [data-testid="stSidebar"] div[data-baseweb="select"] input {
+            color: #FAFAFA !important;
+            background-color: transparent !important;
+        }
+        [data-testid="stSidebar"] div[data-baseweb="select"] > div:first-child {
+            background-color: #1e293b !important;
+            border-color: #334155 !important;
+        }
+        /* Sidebar number input +/- buttons */
+        [data-testid="stSidebar"] button[data-testid="stNumberInputStepUp"],
+        [data-testid="stSidebar"] button[data-testid="stNumberInputStepDown"],
+        [data-testid="stNumberInputStepUp"],
+        [data-testid="stNumberInputStepDown"] {
+            background-color: #1e293b !important;
+            color: #f8fafc !important;
+            border-color: #334155 !important;
+        }
+        /* Sidebar submit / other buttons */
+        [data-testid="stSidebar"] button,
+        [data-testid="stSidebar"] button span,
+        [data-testid="stSidebar"] button p {
+            background-color: #1e293b !important;
+            color: #f8fafc !important;
+            border-color: #334155 !important;
+        }
+        [data-testid="stSidebar"] button[kind="primary"],
+        [data-testid="stSidebar"] button[kind="primary"] span,
+        [data-testid="stSidebar"] button[kind="primary"] p {
+            background-color: #dc2626 !important;
+            color: #ffffff !important;
+            border-color: #dc2626 !important;
+        }
+
+        /* ── Checkbox & radio labels ── */
+        div[data-testid="stCheckbox"] label,
+        div[data-testid="stCheckbox"] span,
+        div[data-testid="stRadio"] label,
+        div[data-testid="stRadio"] span {
+            color: #f8fafc !important;
+        }
+
+        /* ── Markdown text ── */
+        .stMarkdown p,
+        .stMarkdown li,
+        .stMarkdown span {
+            color: #f8fafc !important;
+        }
         </style>
         """,
         unsafe_allow_html=True,
     )
 
+    # Inject a <meta> tag to reinforce dark color-scheme at the HTML level,
+    # which prevents Chrome/Edge from applying light-mode system colours.
+    st.markdown(
+        '<meta name="color-scheme" content="dark">',
+        unsafe_allow_html=True,
+    )
+
+
+# def render_top_nav() -> str:
+#     st.session_state.setdefault("current_page", FINAL_PAGES[0])
+#     if st.session_state["current_page"] not in FINAL_PAGES:
+#         st.session_state["current_page"] = FINAL_PAGES[0]
+
+#     current = st.session_state["current_page"]
+#     st.markdown('<div class="nav-caption">Traffic Police Command Center</div>', unsafe_allow_html=True)
+#     columns = st.columns(len(FINAL_PAGES))
+#     for column, page in zip(columns, FINAL_PAGES):
+#         if column.button(page, key=f"nav-{page}", use_container_width=True):
+#             st.session_state["current_page"] = page
+#             st.rerun()
+
+#     # Use a MutationObserver so the active highlight survives Streamlit re-renders
+#     active_js = f"""
+#     <script>
+#     (function() {{
+#         const ACTIVE_PAGE = {repr(current)};
+
+#         function applyActive() {{
+#             const blocks = document.querySelectorAll('div[data-testid="stHorizontalBlock"]');
+#             if (!blocks.length) return;
+#             const navBlock = blocks[0];
+#             navBlock.querySelectorAll('button').forEach(function(btn) {{
+#                 if (btn.innerText.trim() === ACTIVE_PAGE) {{
+#                     btn.style.setProperty('background-color', '#dc2626', 'important');
+#                     btn.style.setProperty('border-color', '#dc2626', 'important');
+#                     btn.style.setProperty('color', '#ffffff', 'important');
+#                 }} else {{
+#                     btn.style.removeProperty('background-color');
+#                     btn.style.removeProperty('border-color');
+#                     btn.style.removeProperty('color');
+#                 }}
+#             }});
+#         }}
+
+#         // Run immediately and keep re-applying via MutationObserver
+#         applyActive();
+
+#         const observer = new MutationObserver(applyActive);
+#         observer.observe(document.body, {{ childList: true, subtree: true }});
+
+#         // Also re-apply on a short interval to catch any late renders
+#         setInterval(applyActive, 300);
+#     }})();
+#     </script>
+#     """
+#     st.markdown(active_js, unsafe_allow_html=True)
+#     return current
+
+# def render_top_nav() -> str:
+#     st.session_state.setdefault("current_page", FINAL_PAGES[0])
+#     if st.session_state["current_page"] not in FINAL_PAGES:
+#         st.session_state["current_page"] = FINAL_PAGES[0]
+
+#     current = st.session_state["current_page"]
+#     st.markdown('<div class="nav-caption">Traffic Police Command Center</div>', unsafe_allow_html=True)
+#     columns = st.columns(len(FINAL_PAGES))
+#     for column, page in zip(columns, FINAL_PAGES):
+#         if column.button(page, key=f"nav-{page}", use_container_width=True):
+#             st.session_state["current_page"] = page
+#             st.rerun()
+
+#     # Determine the 1-indexed position of the active page for the CSS nth-child selector
+#     active_idx = FINAL_PAGES.index(current) + 1
+
+#     # Pure CSS approach: We use an empty marker span right after the columns block.
+#     # The :has selector isolates the navigation container without affecting buttons elsewhere on the page.
+#     active_css = f"""
+#     <span class="nav-active-marker"></span>
+#     <style>
+#     div[data-testid="element-container"]:has(+ div[data-testid="element-container"] .nav-active-marker) div[data-testid="column"]:nth-child({active_idx}) button {{
+#         background-color: #dc2626 !important;
+#         color: #ffffff !important;
+#         border: 1px solid #dc2626 !important;
+#     }}
+#     div[data-testid="element-container"]:has(+ div[data-testid="element-container"] .nav-active-marker) div[data-testid="column"]:nth-child({active_idx}) button:hover {{
+#         background-color: #b91c1c !important;
+#         border: 1px solid #b91c1c !important;
+#     }}
+#     div[data-testid="element-container"]:has(+ div[data-testid="element-container"] .nav-active-marker) div[data-testid="column"]:nth-child({active_idx}) button * {{
+#         color: #ffffff !important;
+#     }}
+#     </style>
+#     """
+#     st.markdown(active_css, unsafe_allow_html=True)
+#     return current
 
 def render_top_nav() -> str:
     st.session_state.setdefault("current_page", FINAL_PAGES[0])
@@ -114,11 +633,16 @@ def render_top_nav() -> str:
     st.markdown('<div class="nav-caption">Traffic Police Command Center</div>', unsafe_allow_html=True)
     columns = st.columns(len(FINAL_PAGES))
     for column, page in zip(columns, FINAL_PAGES):
+        # Check if this button matches the currently active page
         active = page == st.session_state["current_page"]
-        if column.button(page, key=f"nav-{page}", type="primary" if active else "secondary", use_container_width=True):
+        
+        # Use "primary" type for active buttons (red) and "secondary" for inactive buttons (default)
+        button_type = "primary" if active else "secondary"
+        if column.button(page, key=f"nav-{page}", type=button_type, use_container_width=True):
             st.session_state["current_page"] = page
+            st.rerun()
+            
     return st.session_state["current_page"]
-
 
 @st.cache_resource(show_spinner="Loading command-center modules...")
 def modules():
@@ -857,9 +1381,12 @@ def render_similar_panel(context: dict[str, Any]) -> None:
 def copy_advisory_button(text: str, key: str) -> None:
     escaped = html.escape(text)
     js_text = json.dumps(text)
+    # Calculate height dynamically: ~18px per char width of 60 chars + button + padding
+    approx_lines = max(3, len(text) // 60 + 1)
+    box_height = 52 + approx_lines * 22  # button row + text lines
     components.html(
         f"""
-        <button id="{key}" style="padding:0.45rem 0.7rem;border:1px solid #cbd5e1;border-radius:6px;background:white;cursor:pointer;">
+        <button id="{key}" style="padding:0.45rem 0.7rem;border:1px solid #475569;border-radius:6px;background:#1e293b;color:#f8fafc;cursor:pointer;margin-bottom:0.5rem;">
           Copy Advisory
         </button>
         <script>
@@ -869,9 +1396,9 @@ def copy_advisory_button(text: str, key: str) -> None:
           button.innerText = "Copied";
         }};
         </script>
-        <p style="font-family:sans-serif;font-size:0.82rem;color:#475569;">{escaped}</p>
+        <p style="font-family:sans-serif;font-size:0.82rem;color:#94a3b8;margin:0;line-height:1.5;">{escaped}</p>
         """,
-        height=92,
+        height=box_height,
     )
 
 
@@ -1244,12 +1771,22 @@ def page_ai_copilot() -> None:
 
 
 def main() -> None:
-    st.set_page_config(page_title="Traffic Police Command Center", layout="wide")
+    st.set_page_config(
+        page_title="Traffic Police Command Center",
+        layout="wide",
+        initial_sidebar_state="expanded",
+    )
     inject_styles()
     st.title("Traffic Police Operations Command Center")
+    # st.markdown(
+    #     '',
+    #     unsafe_allow_html=True,
+    # )
     st.markdown(
-        '<div class="command-subtitle">Single-page operations workspace for incident assessment, dispatch, diversions, resources, analytics, and copilot support.</div>',
-        unsafe_allow_html=True,
+        """
+        <div class="command-subtitle">Single-page operations workspace for incident assessment, dispatch, diversions, resources, analytics, and copilot support.</div>
+        """,
+        unsafe_allow_html=True
     )
     page = render_top_nav()
     loaded = modules()
