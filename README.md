@@ -20,7 +20,7 @@ python -m event_intelligence.src.training.train_models --require-ml-backends
 python -c "from event_intelligence.src.prediction import DurationPredictionEngine, ImpactPredictionEngine; print(DurationPredictionEngine.load('event_intelligence/models/duration_model.pkl').backend_name); print(ImpactPredictionEngine.load('event_intelligence/models/impact_model.pkl').backend_name)"
 ```
 
-The verification command should print `lightgbm` and `catboost`.
+The verification command should print `ensemble` and `catboost`.
 
 The trainer auto-discovers CSV files in `event_intelligence/data/` or the
 repository root. The current workspace includes the anonymized Astram event CSV.
